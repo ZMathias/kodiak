@@ -17,7 +17,7 @@ HHOOK SetKeyBoardHook()
 	{
 		printf("failed to hook keyboard: %lu\n", GetLastError());
 	}
-	const HOOKPROC hookproc = HOOKPROC(GetProcAddress(hhook_dll, "KeyboardProc"));
+	auto hookproc = HOOKPROC(GetProcAddress(hhook_dll, "KeyboardProc"));
 	if (hookproc == nullptr)
 	{
 		printf("failed to hook keyboard: %lu\n", GetLastError());
