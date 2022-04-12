@@ -16,7 +16,6 @@ inline bool numlockToggled = false;
 #ifndef DLL_INCLUDES
 #define DLL_INCLUDES
 #include <Windows.h>
-#include <thread>
 #include <string>
 #include <string_view>
 #endif
@@ -26,8 +25,6 @@ inline std::string logStr;
 
 
 inline int sizeOfLogStr = 0;
-
-void SetGlobalKeyStates();
 
 void PrintSpecialKeys(const DWORD& key, const bool& shiftState);
 
@@ -46,7 +43,3 @@ extern "C++" LOGLIB_API inline std::string GetLog();
 extern "C++" LOGLIB_API inline void ClearLogStr();
 
 extern "C++" LOGLIB_API inline int GetSizeOfLogStr();
-
-extern "C++" LOGLIB_API inline void InitFile();
-
-extern "C++" LOGLIB_API inline void CloseFile();

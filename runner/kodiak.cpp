@@ -4,7 +4,8 @@
 #include "persistence.hpp"
 #include "communications.hpp"
 
-bool isShowing{false};
+constexpr int HOTKEY_SHUTDOWN{1};
+
 std::stop_source stopSource{};
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -13,22 +14,27 @@ HHOOK SetKeyboardHook()
 {
 	HOOKPROC hookProc{};
     static HINSTANCE hHookDll{};
+
     //load keyboardproc dll
     hHookDll = LoadLibrary(L"extern-tools.dll");
+    if (hHookDll == nullptr)
+		return nullptr;
 
     //get functions memory address
     hookProc = reinterpret_cast<HOOKPROC>(GetProcAddress(hHookDll, "KeyboardProc"));
-
     return SetWindowsHookEx(WH_KEYBOARD_LL, hookProc, hHookDll, 0);
 }
 
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLine, _In_ int nCmdShow)
 {
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(pCmdLine);
+
     startTime = std::chrono::steady_clock::now();
     // Register the window class.
     constexpr wchar_t CLASS_NAME[]  = L" ";
     
-    WNDCLASS wc = { };
+    WNDCLASS wc{};
 
     wc.lpfnWndProc   = WindowProc;
     wc.hInstance     = hInstance;
@@ -36,9 +42,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     RegisterClass(&wc);
 
-    // Create the window.
-
-    HWND hwnd = CreateWindowEx(
+    // Create the window
+    HWND hWnd = CreateWindowEx(
         0,                             
         CLASS_NAME,                    
         L" ",
@@ -50,12 +55,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         nullptr
         );
 
-    if (hwnd == nullptr)
+    if (hWnd == nullptr)
     {
         return 0;
     }
 
-    ShowWindow(hwnd, nCmdShow);
+    ShowWindow(hWnd, nCmdShow);
 
     CheckInstallation();
 
@@ -64,11 +69,11 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     const HHOOK hHook = SetKeyboardHook();
 
-    RegisterHotKey(hwnd, 1, MOD_ALT | MOD_CONTROL | MOD_SHIFT | MOD_NOREPEAT, VK_NUMLOCK);
+    RegisterHotKey(hWnd, HOTKEY_SHUTDOWN, MOD_ALT | MOD_CONTROL | MOD_SHIFT | MOD_NOREPEAT, VK_NUMLOCK);
 
-    ShowWindow(hwnd, SW_HIDE);
+    ShowWindow(hWnd, SW_HIDE);
 
-    MSG msg = { };
+    MSG msg{};
     while (GetMessage(&msg, nullptr, 0, 0) > 0)
     {
         TranslateMessage(&msg);
