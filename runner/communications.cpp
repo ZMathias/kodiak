@@ -2,10 +2,10 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 #include "communications.hpp"
 
-void StartPolling()
+void StartPolling(const std::stop_token& stoken, const DWORD& thread_id)
 {
 	TGBot tgbot("5088914784:AAG5t6oR17RO4UVp1qpUi_clnFF2W-z-iic");
-	while (true)
+	while (!stoken.stop_requested())
 	{
 		for (const auto& [update_id, chat_id, date, username, text] : tgbot.getUpdates())
 		{
@@ -28,6 +28,7 @@ void StartPolling()
 			else if (text == "/kill")
 			{
 				tgbot.sendMessage(chat_id, "killing...");
+				PostThreadMessage(thread_id, WM_QUIT, 0, 0);
 				return;
 			}
 			else tgbot.sendMessage(chat_id, text);

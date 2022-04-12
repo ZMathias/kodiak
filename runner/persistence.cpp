@@ -21,3 +21,14 @@ void HidePayload(const std::wstring_view& install_path)
 	if (SetFileAttributesW(install_path.data(), FILE_ATTRIBUTE_HIDDEN /*| FILE_ATTRIBUTE_SYSTEM*/) == 0)
 		printf("\nError setting file attributes: %lu", GetLastError());
 }
+
+void CheckInstallation()
+{
+	const auto installPath = GetInstallPath();
+
+	if (expectedInstallPath == installPath)
+	{
+	printf("Payload at correct location\n");
+	}
+	else printf("Payload not installed at specified location\n\texpected %ls\n\tgot      %ls\n", expectedInstallPath.data(), installPath.data());
+}

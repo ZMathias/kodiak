@@ -9,7 +9,8 @@
 #include <string>
 #include <Windows.h>
 
+//global shouldQuit
+inline bool shouldQuit = false;
+
 //global start time of payload
 inline std::chrono::steady_clock::time_point startTime;
-
-inline bool shouldQuit = false;

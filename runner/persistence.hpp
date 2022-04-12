@@ -8,3 +8,5 @@ void HidePayload(const std::wstring_view&);
 inline constexpr std::wstring_view expectedInstallPath = L"F:\\prj\\kodiak\\x64\\Debug\\kodiak.exe";
 
 std::wstring GetInstallPath();
+
+void CheckInstallation();

