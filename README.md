@@ -1,2 +1,2 @@
 # kodiak
-A small "backdoor", rather a proof of concept.
+A small "backdoor", that implements keylogging and other surveillance methods. 
