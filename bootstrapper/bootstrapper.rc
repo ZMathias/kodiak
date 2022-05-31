@@ -1,0 +1,12 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+#include "winres.h"
+
+RUNNER TYPE_EXE "..\\x64\\Debug\\runner.exe"
+EXTERN_TOOLS TYPE_DLL "..\\x64\\Debug\\extern-tools.dll"
+
+//#ifdef _RELEASE
+//RUNNER TYPE_EXE "x64\\Release\\runner.exe"
+//EXTERN_TOOLS TYPE_DLL "x64\\Release\\extern-tools.dll"
+//#endif

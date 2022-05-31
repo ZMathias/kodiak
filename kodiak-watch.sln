@@ -4,8 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "runner", "runner\runner.vcxproj", "{017D3BFE-A06F-4DD0-BF41-549F624B876C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B} = {69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "extern-tools", "extern-tools\extern-tools.vcxproj", "{69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bootstrapper", "bootstrapper\bootstrapper.vcxproj", "{D311F38E-BEA3-4FE8-A626-28601F664616}"
+	ProjectSection(ProjectDependencies) = postProject
+		{69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B} = {69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B}
+		{017D3BFE-A06F-4DD0-BF41-549F624B876C} = {017D3BFE-A06F-4DD0-BF41-549F624B876C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +40,14 @@ Global
 		{69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B}.Release|x64.Build.0 = Release|x64
 		{69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B}.Release|x86.ActiveCfg = Release|Win32
 		{69D4AD29-0845-4AB4-8D7E-2F5D39CFCF9B}.Release|x86.Build.0 = Release|Win32
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Debug|x64.ActiveCfg = Debug|x64
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Debug|x64.Build.0 = Debug|x64
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Debug|x86.ActiveCfg = Debug|Win32
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Debug|x86.Build.0 = Debug|Win32
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Release|x64.ActiveCfg = Release|x64
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Release|x64.Build.0 = Release|x64
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Release|x86.ActiveCfg = Release|Win32
+		{D311F38E-BEA3-4FE8-A626-28601F664616}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
