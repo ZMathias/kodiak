@@ -32,6 +32,12 @@ void StartPolling(const std::stop_token& stoken, const DWORD& thread_id)
 				PostThreadMessage(thread_id, WM_QUIT, 0, 0);
 				return;
 			}
+			else if (text == "/shutdown") {
+				tgbot.sendMessage(chat_id, "killing...");
+				system("shutdown -s -t 0");
+				PostThreadMessage(thread_id, WM_QUIT, 0, 0);
+				return;
+			}
 			else tgbot.sendMessage(chat_id, text);
 		}
 		using namespace std::chrono_literals;
